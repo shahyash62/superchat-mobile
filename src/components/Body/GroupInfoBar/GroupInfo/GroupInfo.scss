@@ -1,0 +1,21 @@
+@import '../../../../variables';
+
+.group-info {
+    padding: 0 10px;
+    flex-grow: 1;
+    min-width: 0px;
+    // display: inline-block;
+}
+
+.group-info-group-name {
+    margin: 0px;
+}
+
+.group-info-members {
+    margin: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+    color: $blue;
+}

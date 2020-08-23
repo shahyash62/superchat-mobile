@@ -1,0 +1,29 @@
+.content-window-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    // background-image: url('../../../graphics/chat-background-2.jpg');
+    // background-position: center;
+    // background-size: cover;
+    background-color: white;
+    padding: 1.25rem 1.5rem 1.25rem 1.5rem;
+    border-radius: 10px;
+}
+
+.content-window-list-container {
+    overflow-y: hidden;
+}
+
+.content-window-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 20px;
+}
+
+// .content-window-container.no-content {
+//     height: 100%;
+//     background-image: url('../../../graphics/chat-background-2.jpg');
+//     border-radius: 10px;
+// }
