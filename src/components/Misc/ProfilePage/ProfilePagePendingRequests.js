@@ -6,6 +6,7 @@ import { IonList, IonListHeader, IonItem, IonButton } from '@ionic/react';
 function ProfilePagePendingRequests(props) {
     const { selectedProfile, receivedPendingContactReqList } = props;
     const [requestComplete, setrequestComplete] = useState(true);
+    console.log(selectedProfile, requestComplete);
     async function sendAcceptContactReq(contactUsername) {
         setrequestComplete(false);
         await props.acceptContactReq(contactUsername);
