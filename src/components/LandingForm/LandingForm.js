@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { signUp, login } from '../../StateManagement/User/UserActions';
+import { signUp, login, refreshTokenAndLogin } from '../../StateManagement/User/UserActions';
 import { IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
 
 const LandingForm = (props) => {
@@ -9,8 +9,13 @@ const LandingForm = (props) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const history = useHistory();
-    // const localStorage = window.localStorage;
-    // const token = localStorage.getItem('AuthKey');
+    useEffect(() => {
+        props.refreshTokenAndLogin(username, password).then((loginRes) => {
+            console.log('refreshtoken log: ', loginRes);
+            if (!loginRes) history.replace('/loggedin');
+        });
+    });
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const loginRes = await props.login(username, password);
@@ -53,6 +58,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     signUp,
     login,
+    refreshTokenAndLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingForm);
