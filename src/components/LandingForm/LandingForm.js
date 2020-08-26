@@ -9,16 +9,20 @@ const LandingForm = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showSplashScreen, setShowSplashScreen] = useState(true);
+    const [logginAttempted, setLogginAttempted] = useState(false);
     const [error, setError] = useState(null);
     const history = useHistory();
     useEffect(() => {
-        props.refreshTokenAndLogin(username, password).then((loginRes) => {
-            console.log('refreshtoken log: ', loginRes);
-            setShowSplashScreen(true);
-            if (!loginRes) return history.replace('/loggedin');
-            setShowSplashScreen(false);
-        });
-    });
+        if (!logginAttempted) {
+            props.refreshTokenAndLogin(username, password).then((loginRes) => {
+                console.log('refreshtoken log: ', loginRes);
+                setShowSplashScreen(true);
+                setLogginAttempted(true);
+                if (!loginRes) return history.replace('/loggedin');
+                setShowSplashScreen(false);
+            });
+        }
+    }, [logginAttempted]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
