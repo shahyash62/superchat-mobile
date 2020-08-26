@@ -1,4 +1,4 @@
-import { signUpService, loginService } from '../../Services/Auth';
+import { signUpService, loginService, refreshToken } from '../../Services/Auth';
 import ChatSocket from '../../Services/SocketServices';
 import { sendContactReqService, acceptContactReqService } from '../../Services/UserServices';
 import { updateGroups, recieveMessage } from '../Content/ContentActions';
@@ -162,6 +162,39 @@ export const login = (username, password) => async (dispatch, getState) => {
         dispatch({
             type: `${LOGIN}_REJECTED`,
         });
+        return statusCodes[0].message;
+    }
+};
+
+export const refreshTokenAndLogin = () => async (dispatch, getState) => {
+    const { statusCodes } = getState();
+    try {
+        const loginResponse = await refreshToken();
+        if (loginResponse.status === 'success') {
+            console.log(loginResponse.data);
+            new ChatSocket(loginResponse.data.userData.username, dispatch);
+            await dispatch(updateGroups(loginResponse.data.userData.globalContactList));
+            if (loginResponse.data.userMessageQueue && loginResponse.data.userMessageQueue.queue) {
+                for (const fromUsername of Object.keys(loginResponse.data.userMessageQueue.queue)) {
+                    for (const message of loginResponse.data.userMessageQueue.queue[fromUsername]) {
+                        dispatch(
+                            recieveMessage({
+                                message,
+                                fromUsername,
+                            })
+                        );
+                    }
+                }
+            }
+            dispatch({
+                type: `${LOGIN}_FULFILLED`,
+                payload: { data: loginResponse.data },
+            });
+        } else {
+            return statusCodes[loginResponse.errorCode].message;
+        }
+    } catch (error) {
+        console.log(error);
         return statusCodes[0].message;
     }
 };

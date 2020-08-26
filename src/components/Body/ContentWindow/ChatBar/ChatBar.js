@@ -9,7 +9,7 @@ function ChatBar(props) {
     return (
         <IonItem>
             <IonInput
-                placeholder="mkc"
+                placeholder="enter message"
                 value={props.message}
                 onIonChange={(event) => {
                     props.editTextMessage(event.detail.value);

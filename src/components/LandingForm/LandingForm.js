@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { signUp, login } from '../../StateManagement/User/UserActions';
+import { signUp, login, refreshTokenAndLogin } from '../../StateManagement/User/UserActions';
 import { IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
+import SplashScreen from '../Misc/SplashScreen/SplashScreen';
 
 const LandingForm = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showSplashScreen, setShowSplashScreen] = useState(true);
     const [error, setError] = useState(null);
     const history = useHistory();
-    // const localStorage = window.localStorage;
-    // const token = localStorage.getItem('AuthKey');
+    useEffect(() => {
+        props.refreshTokenAndLogin(username, password).then((loginRes) => {
+            console.log('refreshtoken log: ', loginRes);
+            setShowSplashScreen(true);
+            if (!loginRes) return history.replace('/loggedin');
+            setShowSplashScreen(false);
+        });
+    });
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        showSplashScreen(true);
         const loginRes = await props.login(username, password);
         if (loginRes) setError(loginRes);
-        else history.replace('/loggedin');
+        else return history.replace('/loggedin');
+        showSplashScreen(false);
     };
-    return (
+    return showSplashScreen ? (
+        <SplashScreen />
+    ) : (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
@@ -53,6 +66,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     signUp,
     login,
+    refreshTokenAndLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingForm);
