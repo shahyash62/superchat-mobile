@@ -9,30 +9,27 @@ const LandingForm = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showSplashScreen, setShowSplashScreen] = useState(true);
-    const [logginAttempted, setLogginAttempted] = useState(false);
     const [error, setError] = useState(null);
     const history = useHistory();
     useEffect(() => {
-        if (!logginAttempted) {
-            props.refreshTokenAndLogin(username, password).then((loginRes) => {
-                console.log('refreshtoken log: ', loginRes);
-                setShowSplashScreen(true);
-                setLogginAttempted(true);
-                if (!loginRes) return history.replace('/loggedin');
-                setShowSplashScreen(false);
-            });
-        }
+        props.refreshTokenAndLogin(username, password).then((loginRes) => {
+            console.log('refreshtoken log: ', loginRes);
+            setShowSplashScreen(true);
+            if (!loginRes) return history.replace('/loggedin');
+            setShowSplashScreen(false);
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [logginAttempted]);
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        showSplashScreen(true);
+        setShowSplashScreen(true);
         const loginRes = await props.login(username, password);
         if (loginRes) setError(loginRes);
         else return history.replace('/loggedin');
-        showSplashScreen(false);
+        setShowSplashScreen(false);
     };
+
     return showSplashScreen ? (
         <SplashScreen />
     ) : (
