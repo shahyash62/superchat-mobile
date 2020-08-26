@@ -22,6 +22,7 @@ const LandingForm = (props) => {
                 setShowSplashScreen(false);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [logginAttempted]);
 
     const handleSubmit = async (event) => {
