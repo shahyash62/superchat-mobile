@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { signUp, login, refreshTokenAndLogin } from '../../StateManagement/User/UserActions';
 import { IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
 import SplashScreen from '../Misc/SplashScreen/SplashScreen';
@@ -10,14 +9,15 @@ const LandingForm = (props) => {
     const [password, setPassword] = useState('');
     const [showSplashScreen, setShowSplashScreen] = useState(true);
     const [error, setError] = useState(null);
-    const history = useHistory();
+
     useEffect(() => {
         props.refreshTokenAndLogin(username, password).then((loginRes) => {
             console.log('refreshtoken log: ', loginRes);
-            setShowSplashScreen(true);
-            if (!loginRes) return history.replace('/loggedin');
             setShowSplashScreen(false);
         });
+        return () => {
+            setShowSplashScreen(false);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -26,7 +26,6 @@ const LandingForm = (props) => {
         setShowSplashScreen(true);
         const loginRes = await props.login(username, password);
         if (loginRes) setError(loginRes);
-        else return history.replace('/loggedin');
         setShowSplashScreen(false);
     };
 
@@ -36,7 +35,7 @@ const LandingForm = (props) => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle className="ion-padding">{'Zen :)'}</IonTitle>
+                    <IonTitle className="ion-padding">{'SuperChat :)'}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding">
@@ -44,7 +43,7 @@ const LandingForm = (props) => {
                     <IonInput value={username} placeholder="Username" onIonChange={(e) => setUsername(e.detail.value)}></IonInput>
                 </IonItem>
                 <IonItem>
-                    <IonInput value={password} placeholder="Password" onIonChange={(e) => setPassword(e.detail.value)}></IonInput>
+                    <IonInput type="password" value={password} placeholder="Password" onIonChange={(e) => setPassword(e.detail.value)}></IonInput>
                 </IonItem>
                 <IonText>{error}</IonText>
                 <IonButton expand="block" onClick={handleSubmit}>

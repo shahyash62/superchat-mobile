@@ -32,7 +32,7 @@ const initialState = {
     // },
     selectedProfile: 'red',
     isUserOnline() {
-        return this.isUserLoggedIn && !this.isAuthorizationPending && this.isChatSocketConnected;
+        return this.authorization.isUserLoggedIn && !this.authorization.isAuthorizationPending && this.authorization.isChatSocketConnected;
     },
     authorization: {
         isUserLoggedIn: false,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { IonPage, IonContent, IonList, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
+import { IonPage, IonContent, IonList, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton } from '@ionic/react';
 import Message from './Message/Message';
 import ChatBar from './ChatBar/ChatBar';
 import './ContentWindow.scss';
@@ -12,6 +12,9 @@ function ContentWindow(props) {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonBackButton defaultHref="/loggedin" />
+                    </IonButtons>
                     <IonTitle>{groupid}</IonTitle>
                 </IonToolbar>
             </IonHeader>

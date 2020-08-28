@@ -1,37 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router';
-import { IonList, IonItem, IonListHeader, IonPage, IonContent } from '@ionic/react';
+import { IonList, IonItem, IonListHeader } from '@ionic/react';
 import { selectGroup } from '../../../StateManagement/Content/ContentActions';
 import GroupItem from './GroupItem/GroupItem';
 
 function GroupList(props) {
-    const { profile } = useParams();
     return (
-        <IonPage>
-            <IonContent>
-                <IonList>
-                    <IonListHeader>Contacts:</IonListHeader>
-                    {props.contactList.map((contact) => {
-                        const groupId = contact.username;
-                        const currGroup = props.groups[groupId];
-                        const displayMessage = props.messages[currGroup.messageIdList[currGroup.messageIdList.length - 1]];
-                        const displayMessageText = displayMessage ? displayMessage.text : null;
-                        return (
-                            <IonItem
-                                onClick={() => {
-                                    props.selectGroup(groupId);
-                                }}
-                                key={groupId}
-                                routerLink={`${profile}/contentwindow/${groupId}`}
-                            >
-                                <GroupItem groupName={currGroup.groupName} displayMessage={displayMessageText} unread={currGroup.unread}></GroupItem>
-                            </IonItem>
-                        );
-                    })}
-                </IonList>
-            </IonContent>
-        </IonPage>
+        <IonList>
+            <IonListHeader>Contacts:</IonListHeader>
+            {props.contactList.map((contact) => {
+                const groupId = contact.username;
+                const currGroup = props.groups[groupId];
+                const displayMessage = props.messages[currGroup.messageIdList[currGroup.messageIdList.length - 1]];
+                const displayMessageText = displayMessage ? displayMessage.text : null;
+                return (
+                    <IonItem
+                        onClick={() => {
+                            props.selectGroup(groupId);
+                        }}
+                        key={groupId}
+                        routerLink={`/contentwindow/${groupId}`}
+                    >
+                        <GroupItem groupName={currGroup.groupName} displayMessage={displayMessageText} unread={currGroup.unread}></GroupItem>
+                    </IonItem>
+                );
+            })}
+        </IonList>
     );
 }
 
