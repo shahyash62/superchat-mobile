@@ -1,22 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
-import {
-    IonPage,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonContent,
-    IonTabs,
-    IonTabBar,
-    IonTabButton,
-    IonLabel,
-    IonRouterOutlet,
-    IonButton,
-    IonIcon,
-    IonFooter,
-    IonButtons,
-} from '@ionic/react';
+import { IonPage, IonHeader, IonTitle, IonToolbar, IonContent, IonButton, IonIcon, IonFooter, IonButtons } from '@ionic/react';
 import { settingsOutline } from 'ionicons/icons';
 import GroupList from './GroupList/GroupList';
 import { changeProfileToBlue, changeProfileToRed, changeProfileToGreen } from '../../StateManagement/User/UserActions';
