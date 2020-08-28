@@ -9,7 +9,8 @@ class ChatSocket {
     static dispatch;
     static token;
     constructor(username, dispatch) {
-        ChatSocket.token = sessionStorage.getItem('AuthKey');
+        ChatSocket.token = localStorage.getItem('AuthKey');
+        console.log('Creating socket with token: ', ChatSocket.token);
         if (!ChatSocket.chatSocket) {
             const socketURL = new URL(chatSocketURL, baseURL);
             ChatSocket.dispatch = dispatch;

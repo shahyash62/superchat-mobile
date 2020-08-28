@@ -7,7 +7,7 @@ import { IonItem, IonInput, IonButton } from '@ionic/react';
 
 function ChatBar(props) {
     return (
-        <IonItem>
+        <IonItem className="ion-margin-bottom">
             <IonInput
                 placeholder="enter message"
                 value={props.message}
@@ -27,8 +27,10 @@ function ChatBar(props) {
             <IonButton
                 className={`button ${theme.chatbar_send_btn}`}
                 onClick={() => {
-                    props.sendMessage(props.message, props.nextId, 'sent');
-                    props.editTextMessage('');
+                    if (props.message) {
+                        props.sendMessage(props.message, props.nextId, 'sent');
+                        props.editTextMessage('');
+                    }
                 }}
             >
                 Send

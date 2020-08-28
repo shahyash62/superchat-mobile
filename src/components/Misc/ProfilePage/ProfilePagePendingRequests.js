@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { acceptContactReq } from '../../../StateManagement/User/UserActions';
-import { IonList, IonListHeader, IonItem, IonButton } from '@ionic/react';
+import { IonList, IonListHeader, IonItem, IonButton, IonButtons } from '@ionic/react';
 
 function ProfilePagePendingRequests(props) {
     const { selectedProfile, receivedPendingContactReqList } = props;
@@ -22,12 +22,12 @@ function ProfilePagePendingRequests(props) {
                 return (
                     <IonItem key={request.username}>
                         <p>{request.username}</p>
-                        <div>
+                        <IonButtons slot="end">
                             <IonButton className="button is-small">Ignore</IonButton>
                             <IonButton className="button is-small is-primary is-outlined" onClick={() => sendAcceptContactReq(request.username)}>
                                 Accept
                             </IonButton>
-                        </div>
+                        </IonButtons>
                     </IonItem>
                 );
             })}

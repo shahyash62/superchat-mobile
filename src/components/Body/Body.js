@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect, useParams } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import {
     IonPage,
     IonHeader,
@@ -14,6 +14,8 @@ import {
     IonRouterOutlet,
     IonButton,
     IonIcon,
+    IonFooter,
+    IonButtons,
 } from '@ionic/react';
 import { settingsOutline } from 'ionicons/icons';
 import GroupList from './GroupList/GroupList';
@@ -21,41 +23,34 @@ import { changeProfileToBlue, changeProfileToRed, changeProfileToGreen } from '.
 import theme from './Body.module.scss';
 
 function Body(props) {
-    console.log(useParams());
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle className="ion-padding">Zen Body</IonTitle>
+                    <IonTitle className="ion-padding">{'SuperChat :)'}</IonTitle>
                     <IonButton routerLink="/loggedin/settings" fill="clear" slot="end">
                         <IonIcon slot="icon-only" icon={settingsOutline} />
                     </IonButton>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <IonTabs>
-                    <IonRouterOutlet>
-                        <Route exact path="/loggedin/:profile" component={GroupList} />
-                        <Redirect exact from="/loggedin" to="/loggedin/red" />
-                    </IonRouterOutlet>
-                    <IonTabBar slot="bottom">
-                        <IonTabButton href="/loggedin/red" tab="Red">
-                            <IonLabel>Red</IonLabel>
-                            <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToRed()}></IonButton>
-                        </IonTabButton>
-
-                        <IonTabButton href="/loggedin/blue" tab="Blue">
-                            <IonLabel>Blue</IonLabel>
-                            <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToBlue()}></IonButton>
-                        </IonTabButton>
-
-                        <IonTabButton href="/loggedin/green" tab="Green">
-                            <IonLabel>Green</IonLabel>
-                            <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToGreen()}></IonButton>
-                        </IonTabButton>
-                    </IonTabBar>
-                </IonTabs>
+                <GroupList></GroupList>
             </IonContent>
+            <IonFooter>
+                <IonToolbar>
+                    <IonButtons slot="primary">
+                        <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToRed()}>
+                            Red
+                        </IonButton>
+                        <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToBlue()}>
+                            Blue
+                        </IonButton>
+                        <IonButton fill="clear" className={theme.transparent_tab_button} onClick={() => props.changeProfileToGreen()}>
+                            Green
+                        </IonButton>
+                    </IonButtons>
+                </IonToolbar>
+            </IonFooter>
         </IonPage>
     );
 }

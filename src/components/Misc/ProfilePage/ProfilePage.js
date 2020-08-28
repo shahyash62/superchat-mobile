@@ -4,11 +4,19 @@ import { editUsername, editStatus } from '../../../StateManagement/User/UserActi
 import ProfileImage from '../ProfileImage/ProfileImage';
 import theme from './ProfilePage.module.scss';
 import ProfilePageAddContactForm from './ProfilePageAddContactForm';
-import { IonPage, IonContent, IonItem, IonLabel, IonInput } from '@ionic/react';
+import { IonPage, IonContent, IonItem, IonLabel, IonInput, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle } from '@ionic/react';
 
 function ProfilePage(props) {
     return (
         <IonPage>
+            <IonHeader>
+                <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonBackButton defaultHref="/loggedin" />
+                    </IonButtons>
+                    <IonTitle>Settings</IonTitle>
+                </IonToolbar>
+            </IonHeader>
             <IonContent className="ion-padding">
                 <IonItem className={theme.profile_page_dp_container}>
                     <ProfileImage className={theme.profile_page_dp}></ProfileImage>

@@ -34,11 +34,14 @@ export async function loginService(username, password) {
                 console.log(Math.floor(progressEvent.loaded / progressEvent.total));
             },
         });
+
         if (res.headers.authentication) {
             localStorage.setItem('AuthKey', res.headers.authentication);
             localStorage.setItem('username', res.data.userData.username);
+            return { status: 'success', data: res.data };
+        } else {
+            throw new Error('ERROR IN RES');
         }
-        return { status: 'success', data: res.data };
     } catch (error) {
         localStorage.setItem('AuthKey', null);
         try {
@@ -68,8 +71,14 @@ export async function refreshToken() {
                     username,
                 },
             });
-            if (res.headers.authentication) localStorage.setItem('AuthKey', res.headers.authentication);
-            return { status: 'success', data: res.data };
+            console.log('refresh token res: ', res);
+            if (res.headers.authentication) {
+                console.log(res.headers.authentication);
+                localStorage.setItem('AuthKey', res.headers.authentication);
+                return { status: 'success', data: res.data };
+            } else {
+                throw new Error('ERROR IN RES');
+            }
         }
     } catch (error) {
         console.log(error);
