@@ -21,7 +21,6 @@ import { changeProfileToBlue, changeProfileToRed, changeProfileToGreen } from '.
 import theme from './Body.module.scss';
 
 function Body(props) {
-    console.log(useParams());
     return (
         <IonPage>
             <IonHeader>
