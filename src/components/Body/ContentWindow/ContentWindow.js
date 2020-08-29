@@ -20,7 +20,7 @@ function ContentWindow(props) {
             </IonHeader>
             <IonContent>
                 {props.messageIdList.length > 0 ? (
-                    <IonList>
+                    <IonList className="ion-padding">
                         {props.messageIdList.map((messageId) => {
                             const currMessage = props.messages[messageId];
                             return (

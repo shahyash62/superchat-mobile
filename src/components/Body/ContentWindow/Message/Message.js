@@ -1,15 +1,19 @@
 import React from 'react';
-import './Message.scss';
+import theme from './Message.module.scss';
 import { IonItem, IonLabel } from '@ionic/react';
 
 function Message(props) {
-    // <div className={`message-container message-${props.messageType}`}>
-    // <p className={`message-status has-text-weight-light`}>{props.messageStatus}</p>
+    const ionLabelProps = {};
+    const ionLabelH2Props = {};
+    if (props.messageType === 'sent') {
+        ionLabelProps.className = 'ion-text-end';
+        ionLabelH2Props.className = 'sent';
+    }
     return (
         <IonItem>
-            <IonLabel>
-                <h2>{props.messageName}</h2>
-                <p>{props.messageText}</p>
+            <IonLabel {...ionLabelProps}>
+                <h2 className={theme[ionLabelH2Props.className]}>{props.messageName}</h2>
+                <p className={theme.message}>{props.messageText}</p>
             </IonLabel>
         </IonItem>
     );
