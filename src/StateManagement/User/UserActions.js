@@ -2,6 +2,7 @@ import { signUpService, loginService, refreshToken } from '../../Services/Auth';
 import ChatSocket from '../../Services/SocketServices';
 import { sendContactReqService, acceptContactReqService } from '../../Services/UserServices';
 import { updateGroups, recieveMessage } from '../Content/ContentActions';
+import { themeChanger } from '../../Helpers/ThemeChanger';
 
 export const EDIT_USERNAME = 'EDIT_USERNAME';
 export const editUsername = (username) => {
@@ -69,6 +70,7 @@ export const acceptContactReq = (contactUsername) => async (dispatch, getState) 
 
 export const CHANGE_PROFILE_TO_RED = 'CHANGE_PROFILE_TO_RED';
 export const changeProfileToRed = () => {
+    themeChanger('red');
     return {
         type: CHANGE_PROFILE_TO_RED,
         payload: 'red',
@@ -76,6 +78,7 @@ export const changeProfileToRed = () => {
 };
 export const CHANGE_PROFILE_TO_BLUE = 'CHANGE_PROFILE_TO_BLUE';
 export const changeProfileToBlue = () => {
+    themeChanger('blue');
     return {
         type: CHANGE_PROFILE_TO_BLUE,
         payload: 'blue',
@@ -83,6 +86,7 @@ export const changeProfileToBlue = () => {
 };
 export const CHANGE_PROFILE_TO_GREEN = 'CHANGE_PROFILE_TO_GREEN';
 export const changeProfileToGreen = () => {
+    themeChanger('green');
     return {
         type: CHANGE_PROFILE_TO_GREEN,
         payload: 'green',
