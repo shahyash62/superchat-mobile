@@ -13,7 +13,7 @@ const LandingForm = (props) => {
     useEffect(() => {
         props.refreshTokenAndLogin(username, password).then((loginRes) => {
             console.log('refreshtoken log: ', loginRes);
-            setShowSplashScreen(false);
+            if (loginRes) setShowSplashScreen(false);
         });
         return () => {
             setShowSplashScreen(false);

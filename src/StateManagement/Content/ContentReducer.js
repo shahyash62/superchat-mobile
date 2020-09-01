@@ -1,5 +1,5 @@
-import { SEND_MESSAGE, RECIEVED_MESSAGE, SELECT_GROUP, UPDATE_GROUPS } from './ContentActions';
 import _ from 'lodash';
+import { SEND_MESSAGE, RECIEVED_MESSAGE, SELECT_GROUP, UPDATE_GROUPS, SET_INITIAL_STATE } from './ContentActions';
 
 const initialState = {
     messages: {
@@ -23,6 +23,18 @@ const initialState = {
 
 function ContentReducer(state = initialState, action) {
     switch (action.type) {
+        case SET_INITIAL_STATE: {
+            console.log('Setting initial state with payload: ', action.payload);
+            console.log('Setting initial state with state: ', state);
+            const { byId, allIds } = action.payload;
+            const newState = _.cloneDeep(state);
+            newState.messages.allIds = [...allIds];
+            newState.messages.byId = _.cloneDeep(byId);
+            for (const id of allIds) {
+                newState.groups.byId[byId[id].group].messageIdList.push(id);
+            }
+            return newState;
+        }
         case `${SEND_MESSAGE}_PENDING`: {
             console.log('ContentReducer Full State: ', state);
             const newState = _.cloneDeep(state);
@@ -49,7 +61,7 @@ function ContentReducer(state = initialState, action) {
         }
         case RECIEVED_MESSAGE: {
             const newState = _.cloneDeep(state);
-            const newId = state.messages.nextId();
+            const newId = action.payload.messageId;
             newState.messages.allIds.push(newId);
             newState.messages.byId[newId] = {
                 text: action.payload.text,
