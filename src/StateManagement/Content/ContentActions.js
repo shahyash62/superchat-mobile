@@ -1,58 +1,99 @@
 import ChatSocket from '../../Services/SocketServices';
+import MessageStore from '../../Database/MessageStore';
+
+export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
+export const setInitialState = () => async (dispatch) => {
+    const allIds = await MessageStore.getAllKeys();
+    const byId = {};
+    for (const id of allIds) {
+        byId[id] = await MessageStore.get(id);
+    }
+    console.log('allIDS: ', allIds, 'byID: ', byId);
+    dispatch({
+        type: SET_INITIAL_STATE,
+        payload: {
+            allIds,
+            byId,
+        },
+    });
+};
 
 export const SEND_MESSAGE = 'SEND_MESSAGE';
-export const sendMessage = (message, messageId) => (dispatch, getState) => {
+export const sendMessage = (message, messageId) => async (dispatch, getState) => {
     // Change this to get user name from user reducer
     const { userData, content } = getState();
     const { username } = userData;
     const toUsername = content[userData.selectedProfile].selectedGroup;
-    dispatch({
-        type: `${SEND_MESSAGE}_PENDING`,
-        payload: {
-            message,
-            messageId,
+    try {
+        const id = await MessageStore.add({
+            text: message,
             status: '...',
             type: 'sent',
             name: username,
-            selectedProfile: userData.selectedProfile,
-        },
-    });
-    const data = { username, toUsername, message };
-    ChatSocket.sendMessage(data, function (serverReply) {
-        if (!serverReply.errorCode)
-            dispatch({
-                type: `${SEND_MESSAGE}_FULFILLED`,
-                payload: {
-                    messageId,
-                    status: 'S',
-                },
-            });
-        else
-            dispatch({
-                type: `${SEND_MESSAGE}_REJECTED`,
-                payload: {
-                    messageId,
-                    status: 'F',
-                },
-            });
-    });
+            group: content[userData.selectedProfile].selectedGroup,
+        });
+
+        dispatch({
+            type: `${SEND_MESSAGE}_PENDING`,
+            payload: {
+                message,
+                messageId: id,
+                status: '...',
+                type: 'sent',
+                name: username,
+                selectedProfile: userData.selectedProfile,
+            },
+        });
+        const data = { username, toUsername, message };
+        ChatSocket.sendMessage(data, function (serverReply) {
+            if (!serverReply.errorCode)
+                dispatch({
+                    type: `${SEND_MESSAGE}_FULFILLED`,
+                    payload: {
+                        messageId: id,
+                        status: 'S',
+                    },
+                });
+            else
+                dispatch({
+                    type: `${SEND_MESSAGE}_REJECTED`,
+                    payload: {
+                        messageId: id,
+                        status: 'F',
+                    },
+                });
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export const RECIEVED_MESSAGE = 'RECIEVED_MESSAGE';
-export const recieveMessage = (data) => (dispatch, getState) => {
+export const recieveMessage = (data) => async (dispatch, getState) => {
     // Change this to get user name from user reducer
-    const { message, fromUsername } = data;
-    const selectedProfile = getState().userData.selectedProfile;
-    console.log(data);
-    dispatch({
-        type: RECIEVED_MESSAGE,
-        payload: {
+    try {
+        const { message, fromUsername } = data;
+        const selectedProfile = getState().userData.selectedProfile;
+        console.log(data);
+        const id = await MessageStore.add({
             text: message,
             type: 'received',
             name: fromUsername,
-            selectedProfile,
-        },
-    });
+            group: fromUsername,
+        });
+        dispatch({
+            type: RECIEVED_MESSAGE,
+            payload: {
+                text: message,
+                type: 'received',
+                name: fromUsername,
+                selectedProfile,
+                messageId: id,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export const SELECT_GROUP = 'SELECT_GROUP';

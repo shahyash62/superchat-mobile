@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { IonPage, IonHeader, IonTitle, IonToolbar, IonContent, IonButton, IonIcon, IonFooter, IonButtons } from '@ionic/react';
 import { settingsOutline } from 'ionicons/icons';
 import GroupList from './GroupList/GroupList';
 import { changeProfileToBlue, changeProfileToRed, changeProfileToGreen } from '../../StateManagement/User/UserActions';
+import { setInitialState } from '../../StateManagement/Content/ContentActions';
 import theme from './Body.module.scss';
 
 function Body(props) {
     const { selectedProfile } = props;
+    useEffect(() => {
+        props.setInitialState();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <IonPage>
             <IonHeader>
@@ -66,6 +72,7 @@ const mapDispatchToProps = {
     changeProfileToRed,
     changeProfileToBlue,
     changeProfileToGreen,
+    setInitialState,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Body);
